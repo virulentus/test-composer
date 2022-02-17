@@ -5,9 +5,9 @@ use Slim\Factory\AppFactory;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
-$loader = new FilesystemLoader('templates');
+$loader = new FilesystemLoader('../templates');
 $view = new Environment($loader);
 
 $app = AppFactory::create();
@@ -18,9 +18,17 @@ $app->get('/', function (Request $request, Response $response, $args) use ($view
     return $response;
 });
 
-$app->get('/about', function (Request $request, Response $response, $args) use ($view) {
-    $body = $view->render('about.twig', [
+$app->get('/actors', function (Request $request, Response $response, $args) use ($view) {
+    $body = $view->render('actors.twig', [
         'name' => 'Max'
+    ]);
+    $response->getBody()->write($body);
+    return $response;
+});
+
+$app->get('/{url_key}', function (Request $request, Response $response, $args) use ($view) {
+    $body = $view->render('post.twig', [
+        'url_key' => $args['url_key']
     ]);
     $response->getBody()->write($body);
     return $response;
